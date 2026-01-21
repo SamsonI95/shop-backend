@@ -1,6 +1,5 @@
 import swaggerJSDoc from "swagger-jsdoc";
 
-const isProd = process.env.NODE_ENV === "production";
 
 export const swaggerSpec = swaggerJSDoc({
   definition: {
@@ -10,13 +9,7 @@ export const swaggerSpec = swaggerJSDoc({
       version: "1.0.0",
       description: "MVP e-commerce backend (Express + Prisma)",
     },
-    servers: [
-      {
-        url: isProd
-          ? "https://shop-backend-nwud.onrender.com/"
-          : "http://localhost:4000",
-      },
-    ],
+    servers: [{ url: process.env.API_BASE_URL ?? "http://localhost:4000" }],
     components: {
       securitySchemes: {
         bearerAuth: {
