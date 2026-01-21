@@ -20,6 +20,9 @@ import { paymentsRoutes } from "./modules/payments/payments.routes";
 export function createApp() {
   const app = express();
 
+  app.use(express.json({ limit: "1mb" }));
+  app.use(apiRateLimit);
+
   app.use(pinoHttp({ logger }));
 
   app.use(helmet());
@@ -31,9 +34,6 @@ export function createApp() {
   );
 
   app.use("/payments", paymentsRoutes({ rawBody: true }));
-
-  app.use(express.json({ limit: "1mb" }));
-  app.use(apiRateLimit);
 
   app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
   app.use(
