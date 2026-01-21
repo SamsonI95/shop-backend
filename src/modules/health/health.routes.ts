@@ -1,8 +1,16 @@
 import { Router } from "express";
-import { ok } from "../../utils/apiResponse";
+import * as controller from "./health.controller";
 
 export const healthRoutes = Router();
 
-healthRoutes.get("/", (_req, res) => {
-  return res.json(ok("ok", { uptime: process.uptime() }));
-});
+/**
+ * @openapi
+ * /health:
+ *   get:
+ *     summary: Health check
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Server is healthy
+ */
+healthRoutes.get("/", controller.health);

@@ -6,6 +6,8 @@ import { env } from "./config/env";
 import { logger } from "./config/logger";
 import { apiRateLimit } from "./middlewares/rateLimit";
 import { errorHandler, notFound } from "./middlewares/error";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 import { healthRoutes } from "./modules/health/health.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
@@ -32,6 +34,13 @@ export function createApp() {
 
   app.use(express.json({ limit: "1mb" }));
   app.use(apiRateLimit);
+
+  app.get("/docs.json", (_req, res) => res.json(swaggerSpec));
+  app.use(
+    "/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, { explorer: true }),
+  );
 
   app.use("/health", healthRoutes);
   app.use("/auth", authRoutes);

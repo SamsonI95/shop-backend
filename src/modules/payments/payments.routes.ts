@@ -9,9 +9,43 @@ export function paymentsRoutes(opts?: { rawBody?: boolean }) {
 
   // Webhook must use raw-body parser
   if (opts?.rawBody) {
+    /**
+     * @openapi
+     * /payments/webhook/paystack:
+     *   post:
+     *     summary: Paystack webhook
+     *     description: Receive Paystack webhook events.
+     *     tags: [Payments]
+     *     responses:
+     *       200:
+     *         description: Webhook received
+     */
     r.post("/webhook/paystack", controller.rawBodyJson, controller.webhook);
   }
 
+  /**
+   * @openapi
+   * /payments/init:
+   *   post:
+   *     summary: Initialize payment
+   *     description: Start a payment for an order.
+   *     tags: [Payments]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required: [orderId]
+   *             properties:
+   *               orderId:
+   *                 type: string
+   *     responses:
+   *       200:
+   *         description: Payment initialized
+   */
   r.post(
     "/init",
     requireAuth,
