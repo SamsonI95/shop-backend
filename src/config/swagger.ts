@@ -1,5 +1,8 @@
 import swaggerJSDoc from "swagger-jsdoc";
 
+const localUrl = process.env.APP_URL ?? "http://localhost:4000";
+const renderUrl =
+  process.env.API_BASE_URL ?? "https://shop-backend-nwud.onrender.com/";
 
 export const swaggerSpec = swaggerJSDoc({
   definition: {
@@ -9,7 +12,7 @@ export const swaggerSpec = swaggerJSDoc({
       version: "1.0.0",
       description: "MVP e-commerce backend (Express + Prisma)",
     },
-    servers: [{ url: process.env.API_BASE_URL ?? "http://localhost:4000" }],
+    servers: [{ url: localUrl }, { url: renderUrl }],
     components: {
       securitySchemes: {
         bearerAuth: {
