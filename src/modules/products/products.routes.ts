@@ -42,21 +42,38 @@ productsRoutes.get("/:id", controller.getOne);
  * @openapi
  * /products:
  *   post:
- *     summary: Create product
- *     description: Create a product (admin only).
+ *     summary: Create product (admin)
  *     tags: [Products]
  *     security:
  *       - bearerAuth: []
+ *       - adminKey: []
+ *     parameters:
+ *       - in: header
+ *         name: x-admin-key
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Admin API key (required if user is not ADMIN)
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [name, priceKobo, currency, stock]
+ *             properties:
+ *               name: { type: string, example: "Black Tee" }
+ *               description: { type: string, example: "Soft cotton tee" }
+ *               priceKobo: { type: integer, example: 120000 }
+ *               currency: { type: string, example: "NGN" }
+ *               stock: { type: integer, example: 10 }
+ *               imageUrl: { type: string, example: "https://pub-xxx.r2.dev/products/black-tee.jpg" }
+ *               isActive: { type: boolean, example: true }
  *     responses:
- *       200:
+ *       201:
  *         description: Created
  */
+
 productsRoutes.post("/", requireAuth, requireAdminOrApiKey, validateBody(createProductSchema), controller.create);
 /**
  * @openapi
